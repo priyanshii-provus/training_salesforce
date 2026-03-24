@@ -46,7 +46,6 @@ Quality is at the core of this project. All components have been verified with c
 ---
 ## 📊 Logic Flow
 
-```mermaid
 graph TD
     Start[Opportunity Stage Change] -->|Stage: 'Proposal/Price Quote'| OT[OpportunityTrigger]
     OT -->|Auto-Create| Q[New Quote Record]
@@ -60,5 +59,4 @@ graph TD
     Manual -->|Yes| Override[Keep Manual Entry]
     DH --> Max{ > Max Limit?}
     Max -->|Yes| Err[Block Save & Show Error]
-    Max -->|No| Success[Record Saved]s
-
+    Max -->|No| Success[Record Saved]
