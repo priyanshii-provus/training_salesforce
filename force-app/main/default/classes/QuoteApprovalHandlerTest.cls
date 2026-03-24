@@ -43,7 +43,7 @@ public class QuoteApprovalHandlerTest {
         // Assert check
         List<FeedItem> feeds = [SELECT Id, Body FROM FeedItem WHERE ParentId = :q.Id];
         
-        // Agar feeds empty nahi hai matlab post ban gayi, test pass!
+    //feed should not be empty to pass test
         System.assertEquals(false, feeds.isEmpty(), 'Chatter feed post should be created for >20% discount.');
     }
 }
