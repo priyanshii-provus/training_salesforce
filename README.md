@@ -44,4 +44,21 @@ Quality is at the core of this project. All components have been verified with c
     * `QuoteApprovalHandlerTest`: Verifies Chatter notification logic.
 
 ---
+## 📊 Logic Flow
+
+```mermaid
+graph TD
+    Start[Opportunity Stage Change] -->|Stage: 'Proposal/Price Quote'| OT[OpportunityTrigger]
+    OT -->|Auto-Create| Q[New Quote Record]
+    Q --> QLI[Add Quote Line Items]
+    QLI --> DH[Discount Handler]
+    DH --> Tier{Qty Threshold?}
+    Tier -->|Qty > 50| T2[Tier 2: 15%]
+    Tier -->|Qty > 10| T1[Tier 1: 10%]
+    Tier -->|Default| BD[Base: 5%]
+    DH --> Manual{Manual Discount?}
+    Manual -->|Yes| Override[Keep Manual Entry]
+    DH --> Max{ > Max Limit?}
+    Max -->|Yes| Err[Block Save & Show Error]
+    Max -->|No| Success[Record Saved]s
 
