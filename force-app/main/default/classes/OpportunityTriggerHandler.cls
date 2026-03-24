@@ -6,11 +6,11 @@ public with sharing class OpportunityTriggerHandler {
         for (Opportunity opp : newList) {
             Boolean isStageChanged = false;
             
-            // Insert ke time check karo
+            //checked at time of  Insertion
             if (oldMap == null && opp.StageName == 'Proposal/Price Quote') {
                 isStageChanged = true;
             } 
-            // Update ke time check karo (ki purana stage kuch aur tha aur naya ye hua hai)
+            // check at update
             else if (oldMap != null) {
                 Opportunity oldOpp = oldMap.get(opp.Id);
                 if (opp.StageName == 'Proposal/Price Quote' && oldOpp.StageName != 'Proposal/Price Quote') {
@@ -18,7 +18,7 @@ public with sharing class OpportunityTriggerHandler {
                 }
             }
             
-            // Agar stage match hota hai, toh naya Quote banao
+            // if stage matches generate new quote
             if (isStageChanged) {
                 Quote newQuote = new Quote();
                 newQuote.Name = opp.Name + ' - Auto Quote'; // Quote ka default naam
@@ -29,7 +29,7 @@ public with sharing class OpportunityTriggerHandler {
             }
         }
         
-        // Agar list mein quotes hain, toh ek saath insert kar do (Bulkified!)
+        // if list have quote insert all together 
         if (!quotesToInsert.isEmpty()) {
             insert quotesToInsert;
             System.debug('Auto Quotes Created: ' + quotesToInsert.size());
