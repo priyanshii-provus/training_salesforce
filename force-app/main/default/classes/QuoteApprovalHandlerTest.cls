@@ -3,7 +3,7 @@ public class QuoteApprovalHandlerTest {
     
     @testSetup
     static void setup() {
-        // Zaroori data setup
+        // setup
         Opportunity opp = new Opportunity(Name='Test Opp', StageName='Prospecting', CloseDate=Date.today());
         insert opp;
         
@@ -27,7 +27,7 @@ public class QuoteApprovalHandlerTest {
         Quote q = [SELECT Id FROM Quote LIMIT 1];
         PricebookEntry pbe = [SELECT Id FROM PricebookEntry LIMIT 1];
         
-        // Yahan hum 25% discount de rahe hain taaki Alert trigger ho (kuch orgs me override handle karne ke liye test me explicit val zaruri hai)
+        // extra discount to alert trigger
         QuoteLineItem qli = new QuoteLineItem(
             QuoteId = q.Id,
             PricebookEntryId = pbe.Id,
@@ -40,7 +40,7 @@ public class QuoteApprovalHandlerTest {
         insert qli;
         Test.stopTest();
         
-        // Assert check: Kya FeedItem (Chatter Post) bani?
+        // Assert check
         List<FeedItem> feeds = [SELECT Id, Body FROM FeedItem WHERE ParentId = :q.Id];
         
         // Agar feeds empty nahi hai matlab post ban gayi, test pass!
