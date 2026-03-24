@@ -45,11 +45,3 @@ Quality is at the core of this project. All components have been verified with c
 
 ---
 
-## 🛠 Setup & Installation
-
-1. Deploy the `Product_Category__c` custom object and fields.
-2. Deploy the `classes` and `triggers` folders to your Salesforce Org.
-3. Ensure the `Pricebook` and `Products` are configured to see the tiered logic in action.
-
----
-**Developed by:** [Your Name/GitHub Profile]
