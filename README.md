@@ -45,7 +45,7 @@ Quality is at the core of this project. All components have been verified with c
 
 ---
 ## 📊 Logic Flow
-
+```mermaid
 graph TD
     Start[Opportunity Stage Change] -->|Stage: 'Proposal/Price Quote'| OT[OpportunityTrigger]
     OT -->|Auto-Create| Q[New Quote Record]
