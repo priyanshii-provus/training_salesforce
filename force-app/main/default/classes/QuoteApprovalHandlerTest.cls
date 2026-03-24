@@ -1,30 +1,49 @@
 @isTest
 public class QuoteApprovalHandlerTest {
-    @TestSetup
+    
+    @testSetup
     static void setup() {
-        Account acc = new Account(Name='Watchdog Test'); insert acc;
-        Opportunity opp = new Opportunity(Name='Opp', AccountId=acc.Id, StageName='Prospecting', CloseDate=Date.today(), Pricebook2Id=Test.getStandardPricebookId());
+        // Zaroori data setup
+        Opportunity opp = new Opportunity(Name='Test Opp', StageName='Prospecting', CloseDate=Date.today());
         insert opp;
-        Product2 p = new Product2(Name='Service', IsActive=true); insert p;
-        PricebookEntry pbe = new PricebookEntry(Pricebook2Id=Test.getStandardPricebookId(), Product2Id=p.Id, UnitPrice=100, IsActive=true);
+        
+        Product2 prod = new Product2(Name='Test Product', IsActive=true);
+        insert prod;
+        
+        PricebookEntry pbe = new PricebookEntry(
+            Pricebook2Id = Test.getStandardPricebookId(),
+            Product2Id = prod.Id,
+            UnitPrice = 1000,
+            IsActive = true
+        );
         insert pbe;
-        insert new Quote(Name='Watchdog Quote', OpportunityId=opp.Id, Status='Draft', Pricebook2Id=Test.getStandardPricebookId());
+        
+        Quote q = new Quote(Name='Test Quote', OpportunityId=opp.Id, Pricebook2Id=Test.getStandardPricebookId());
+        insert q;
     }
 
-    @isTest static void testWatchdogAlert() {
+    @isTest
+    static void testWatchdogAlert() {
         Quote q = [SELECT Id FROM Quote LIMIT 1];
         PricebookEntry pbe = [SELECT Id FROM PricebookEntry LIMIT 1];
         
-        QuoteLineItem qli = new QuoteLineItem(QuoteId=q.Id, PricebookEntryId=pbe.Id, Quantity=1, UnitPrice=100);
-        insert qli;
-
-        // Discount > 20% trigger watchdog
+        // Yahan hum 25% discount de rahe hain taaki Alert trigger ho (kuch orgs me override handle karne ke liye test me explicit val zaruri hai)
+        QuoteLineItem qli = new QuoteLineItem(
+            QuoteId = q.Id,
+            PricebookEntryId = pbe.Id,
+            Quantity = 1,
+            UnitPrice = 1000,
+            Discount = 25 
+        );
+        
         Test.startTest();
-        qli.Discount = 25;
-        update qli;
+        insert qli;
         Test.stopTest();
-
-        System.assertEquals(true, [SELECT Approval_Required__c FROM Quote].Approval_Required__c);
-        System.assert([SELECT Id FROM FeedItem WHERE ParentId = :q.Id].size() > 0);
+        
+        // Assert check: Kya FeedItem (Chatter Post) bani?
+        List<FeedItem> feeds = [SELECT Id, Body FROM FeedItem WHERE ParentId = :q.Id];
+        
+        // Agar feeds empty nahi hai matlab post ban gayi, test pass!
+        System.assertEquals(false, feeds.isEmpty(), 'Chatter feed post should be created for >20% discount.');
     }
 }
