@@ -21,9 +21,9 @@ public with sharing class OpportunityTriggerHandler {
             // if stage matches generate new quote
             if (isStageChanged) {
                 Quote newQuote = new Quote();
-                newQuote.Name = opp.Name + ' - Auto Quote'; // Quote ka default naam
-                newQuote.OpportunityId = opp.Id; // Opp se link kar diya
-                // newQuote.Pricebook2Id = ... (Agar specific pricebook set karni ho toh yahan kar sakte hain)
+                newQuote.Name = opp.Name + ' - Auto Quote'; // Quote default name
+                newQuote.OpportunityId = opp.Id; // Opp linked
+                
                 
                 quotesToInsert.add(newQuote);
             }
