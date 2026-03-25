@@ -9,7 +9,7 @@ private class OpportunityTriggerHandlerTest {
         insert acc;
     }
 
-    // SCENARIO 1: Direct new Opportunity banayi whose  Stage is 'Proposal/Price Quote' 
+    // SCENARIO 1:  creating  new Opportunity whose  Stage is 'Proposal/Price Quote' 
     @isTest
     static void testAutoQuoteOnInsert() {
         Account acc = [SELECT Id FROM Account LIMIT 1];
@@ -22,7 +22,7 @@ private class OpportunityTriggerHandlerTest {
         );
         
         Test.startTest();
-        insert opp; // Yahan trigger fire hoga
+        insert opp; //  trigger fire 
         Test.stopTest();
         
         // Assert
