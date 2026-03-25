@@ -53,7 +53,7 @@ private class OpportunityTriggerHandlerTest {
         opp.StageName = 'Proposal/Price Quote';
         
         Test.startTest();
-        update opp; // Yahan update wala trigger fire hoga
+        update opp; // update trigger fires 
         Test.stopTest();
         
         // Assert
