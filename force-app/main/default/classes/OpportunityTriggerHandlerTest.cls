@@ -4,7 +4,7 @@ private class OpportunityTriggerHandlerTest {
     // Setup method 
     @testSetup
     static void setupData() {
-        // Ek Account bana lete hain (Kyunki real orgs mein Opp ke liye Account zaroori hota hai)
+  
         Account acc = new Account(Name = 'Test Auto-Quote Account');
         insert acc;
     }
