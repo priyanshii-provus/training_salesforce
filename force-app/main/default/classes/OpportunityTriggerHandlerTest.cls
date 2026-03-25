@@ -17,7 +17,7 @@ private class OpportunityTriggerHandlerTest {
         Opportunity opp = new Opportunity(
             Name = 'Direct Insert Opp',
             AccountId = acc.Id,
-            StageName = 'Proposal/Price Quote', // Direct trigger wala stage
+            StageName = 'Proposal/Price Quote', // Direct trigger 
             CloseDate = Date.today().addDays(30)
         );
         
@@ -27,8 +27,8 @@ private class OpportunityTriggerHandlerTest {
         
         // Assert
         List<Quote> createdQuotes = [SELECT Id, Name FROM Quote WHERE OpportunityId = :opp.Id];
-        System.assertEquals(1, createdQuotes.size(), 'Insert par 1 Quote automatically banna chahiye tha.');
-        System.assertEquals('Direct Insert Opp - Auto Quote', createdQuotes[0].Name, 'Quote ka naam format sahi nahi hai.');
+        System.assertEquals(1, createdQuotes.size(), 'On Insert  1 Quote should automatically generate .');
+        System.assertEquals('Direct Insert Opp - Auto Quote', createdQuotes[0].Name, 'Quote name and format is correct.');
     }
 
     // SCENARIO 2:  update opportunity to  'Proposal/Price Quote' 
@@ -47,7 +47,7 @@ private class OpportunityTriggerHandlerTest {
         
         // no quote should generate
         List<Quote> initialQuotes = [SELECT Id FROM Quote WHERE OpportunityId = :opp.Id];
-        System.assertEquals(0, initialQuotes.size(), 'Prospecting stage par Quote nahi banna chahiye.');
+        System.assertEquals(0, initialQuotes.size(), 'No Quote should generate at Prospecting stage .');
         
         // stage update 
         opp.StageName = 'Proposal/Price Quote';
@@ -58,6 +58,6 @@ private class OpportunityTriggerHandlerTest {
         
         // Assert
         List<Quote> updatedQuotes = [SELECT Id FROM Quote WHERE OpportunityId = :opp.Id];
-        System.assertEquals(1, updatedQuotes.size(), 'Stage update hone par 1 Quote banna chahiye tha.');
+        System.assertEquals(1, updatedQuotes.size(), 'When Stage updates 1 Quote should generate .');
     }
 }
