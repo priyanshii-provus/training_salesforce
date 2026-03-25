@@ -56,7 +56,7 @@ private class OpportunityTriggerHandlerTest {
         update opp; // update trigger fires 
         Test.stopTest();
         
-        
+        // Assert
         List<Quote> updatedQuotes = [SELECT Id FROM Quote WHERE OpportunityId = :opp.Id];
         System.assertEquals(1, updatedQuotes.size(), 'When Stage updates 1 Quote should generate .');
     }
