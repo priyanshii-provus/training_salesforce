@@ -1,7 +1,7 @@
 @isTest
 private class OpportunityTriggerHandlerTest {
     
-    // Setup method taaki har test ke liye common data ban sake
+    // Setup method 
     @testSetup
     static void setupData() {
         // Ek Account bana lete hain (Kyunki real orgs mein Opp ke liye Account zaroori hota hai)
@@ -9,7 +9,7 @@ private class OpportunityTriggerHandlerTest {
         insert acc;
     }
 
-    // SCENARIO 1: Direct nayi Opportunity banayi jiska Stage pehle se hi 'Proposal/Price Quote' hai
+    // SCENARIO 1: Direct new Opportunity banayi whose  Stage is 'Proposal/Price Quote' 
     @isTest
     static void testAutoQuoteOnInsert() {
         Account acc = [SELECT Id FROM Account LIMIT 1];
@@ -25,18 +25,18 @@ private class OpportunityTriggerHandlerTest {
         insert opp; // Yahan trigger fire hoga
         Test.stopTest();
         
-        // Assert: Check karte hain ki kya Quote sach mein bana?
+        // Assert
         List<Quote> createdQuotes = [SELECT Id, Name FROM Quote WHERE OpportunityId = :opp.Id];
         System.assertEquals(1, createdQuotes.size(), 'Insert par 1 Quote automatically banna chahiye tha.');
         System.assertEquals('Direct Insert Opp - Auto Quote', createdQuotes[0].Name, 'Quote ka naam format sahi nahi hai.');
     }
 
-    // SCENARIO 2: Pehle kisi aur Stage mein Opp banayi, fir update karke 'Proposal/Price Quote' kiya
+    // SCENARIO 2:  update opportunity to  'Proposal/Price Quote' 
     @isTest
     static void testAutoQuoteOnUpdate() {
         Account acc = [SELECT Id FROM Account LIMIT 1];
         
-        // Pehle 'Prospecting' stage mein insert karte hain (Yahan quote nahi banna chahiye)
+        // inserting at  'Prospecting' stage - no quote generation
         Opportunity opp = new Opportunity(
             Name = 'Update Stage Opp',
             AccountId = acc.Id,
@@ -45,18 +45,18 @@ private class OpportunityTriggerHandlerTest {
         );
         insert opp;
         
-        // Verify ki insert par koi Quote nahi bana
+        // no quote should generate
         List<Quote> initialQuotes = [SELECT Id FROM Quote WHERE OpportunityId = :opp.Id];
         System.assertEquals(0, initialQuotes.size(), 'Prospecting stage par Quote nahi banna chahiye.');
         
-        // Ab Stage update karte hain
+        // stage update 
         opp.StageName = 'Proposal/Price Quote';
         
         Test.startTest();
         update opp; // Yahan update wala trigger fire hoga
         Test.stopTest();
         
-        // Assert: Check karte hain ki kya update ke baad Quote bana?
+        // Assert
         List<Quote> updatedQuotes = [SELECT Id FROM Quote WHERE OpportunityId = :opp.Id];
         System.assertEquals(1, updatedQuotes.size(), 'Stage update hone par 1 Quote banna chahiye tha.');
     }
